@@ -9,6 +9,7 @@ export interface Account {
   id: string;
   name: string;
   balance?: number;
+  type?: 'paybox' | 'income' | 'regular';
 }
 
 export interface Organization {
@@ -33,8 +34,9 @@ export interface Product {
   id: string;
   name: string;
   article?: string;
+  sku?: string;
   price: number;
-  quantity: number;
+  stock: number;
   unit?: string;
   imageUrl?: string;
 }
@@ -60,4 +62,36 @@ export interface Order {
   comment?: string;
   status: 'draft' | 'created' | 'conducted';
   createdAt?: Date;
+  incomeAccount?: Account;
+  priority?: string;
+  delivery?: {
+    enabled: boolean;
+    address?: string;
+    date?: string;
+    time?: string;
+    cost?: string;
+    note?: string;
+    recipient?: {
+      name?: string;
+      phone?: string;
+    };
+  };
+  additionalParams?: {
+    number?: string;
+    comment?: string;
+    contract?: string;
+    tags?: string[];
+    dealId?: string;
+  };
 }
+
+export type {
+  Client,
+  Account,
+  Organization,
+  Warehouse,
+  PriceType,
+  Product,
+  OrderItem,
+  Order
+};

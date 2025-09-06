@@ -17,7 +17,7 @@ function SelectField<T>({
   onChange,
   getOptionLabel,
   getOptionValue,
-  placeholder = 'Select...'
+  placeholder = 'Выберите...'
 }: SelectFieldProps<T>) {
   return (
     <div>

@@ -1,6 +1,6 @@
-# TableCRM Mobile Order
+# TableCRM Mobile
 
-Mobile web application for creating orders in TableCRM system.
+Mobile order management system for TableCRM.
 
 ## Features
 

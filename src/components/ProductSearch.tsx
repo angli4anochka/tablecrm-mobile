@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Product } from '../types';
+import type { Product } from '../types';
 import api from '../api/tablecrm';
 
 interface ProductSearchProps {
@@ -51,19 +51,19 @@ const ProductSearch: React.FC<ProductSearchProps> = ({ onProductSelect }) => {
     <div className="space-y-4">
       <div className="relative">
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          Product Search
+          Поиск товара
         </label>
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search products..."
+          placeholder="Поиск товаров..."
           className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
         {loading && (
           <div className="absolute mt-1 w-full bg-white border border-gray-200 rounded-md shadow-lg p-2 z-10">
-            <p className="text-sm text-gray-500">Searching...</p>
+            <p className="text-sm text-gray-500">Поиск...</p>
           </div>
         )}
 
@@ -79,12 +79,12 @@ const ProductSearch: React.FC<ProductSearchProps> = ({ onProductSelect }) => {
                   <div>
                     <p className="font-medium">{product.name}</p>
                     {product.article && (
-                      <p className="text-xs text-gray-500">Art: {product.article}</p>
+                      <p className="text-xs text-gray-500">Арт: {product.article}</p>
                     )}
                   </div>
                   <div className="text-right">
-                    <p className="font-medium">${product.price}</p>
-                    <p className="text-xs text-gray-500">Stock: {product.quantity}</p>
+                    <p className="font-medium">{product.price} ₽</p>
+                    <p className="text-xs text-gray-500">Остаток: {product.stock}</p>
                   </div>
                 </div>
               </button>
@@ -98,14 +98,14 @@ const ProductSearch: React.FC<ProductSearchProps> = ({ onProductSelect }) => {
           <div className="flex justify-between items-center mb-3">
             <div>
               <p className="font-medium">{selectedProduct.name}</p>
-              <p className="text-sm text-gray-600">Price: ${selectedProduct.price}</p>
+              <p className="text-sm text-gray-600">Цена: {selectedProduct.price} ₽</p>
             </div>
             <div className="flex items-center space-x-2">
-              <label className="text-sm font-medium">Qty:</label>
+              <label className="text-sm font-medium">Кол-во:</label>
               <input
                 type="number"
                 min="1"
-                max={selectedProduct.quantity}
+                max={selectedProduct.stock}
                 value={quantity}
                 onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
                 className="w-20 px-2 py-1 border border-gray-300 rounded-md"
@@ -116,7 +116,7 @@ const ProductSearch: React.FC<ProductSearchProps> = ({ onProductSelect }) => {
             onClick={handleAddProduct}
             className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200"
           >
-            Add to Order
+            Добавить в заказ
           </button>
         </div>
       )}
