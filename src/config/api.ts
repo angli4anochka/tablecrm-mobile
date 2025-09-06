@@ -7,11 +7,16 @@ export const API_CONFIG = {
 };
 
 export const getApiUrl = (endpoint: string): string => {
-  const baseUrl = API_CONFIG.BASE_URL;
+  const isDev = window.location.hostname === 'localhost';
   
-  if (API_CONFIG.USE_CORS_PROXY) {
-    return `${API_CONFIG.CORS_PROXY}${encodeURIComponent(baseUrl + endpoint)}`;
+  if (isDev) {
+    return `http://localhost:3001/api/v1${endpoint}`;
   }
   
+  if (window.location.hostname.includes('vercel.app')) {
+    return `/api/proxy?path=${encodeURIComponent(endpoint)}`;
+  }
+  
+  const baseUrl = API_CONFIG.BASE_URL;
   return `${baseUrl}${endpoint}`;
 };

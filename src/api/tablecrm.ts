@@ -20,10 +20,24 @@ class TableCRMApi {
   }
 
   private getUrl(endpoint: string, includeToken: boolean = true, addTrailingSlash: boolean = true) {
-    const baseUrl = API_CONFIG.BASE_URL;
+    const isDev = window.location.hostname === 'localhost';
+    const isVercel = window.location.hostname.includes('vercel.app');
+    
     const formattedEndpoint = addTrailingSlash 
       ? (endpoint.endsWith('/') ? endpoint : `${endpoint}/`)
       : endpoint;
+    
+    if (isDev) {
+      const tokenParam = includeToken ? `?token=${this.token}` : '';
+      return `http://localhost:3001/api/v1${formattedEndpoint}${tokenParam}`;
+    }
+    
+    if (isVercel) {
+      const tokenParam = includeToken ? `&token=${this.token}` : '';
+      return `/api/proxy?path=${encodeURIComponent(formattedEndpoint)}${tokenParam}`;
+    }
+    
+    const baseUrl = API_CONFIG.BASE_URL;
     const tokenParam = includeToken ? `?token=${this.token}` : '';
     return `${baseUrl}${formattedEndpoint}${tokenParam}`;
   }
