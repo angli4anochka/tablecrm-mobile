@@ -12,6 +12,14 @@ class TableCRMApi {
   setToken(token: string) {
     this.token = token;
     categoriesApi.setToken(token);
+    // Сбрасываем кэш при смене токена
+    this.cachedClients = [];
+    this.clientsCacheLoaded = false;
+  }
+  
+  clearClientsCache() {
+    this.cachedClients = [];
+    this.clientsCacheLoaded = false;
   }
 
   async getIncomeAccounts(): Promise<Account[]> {
@@ -132,6 +140,10 @@ class TableCRMApi {
         }
       }
       
+      // Список тестовых имен для фильтрации
+      const testNames = ['cxcxcc', 'xcxvvc', 'test', 'тест', 'asdasd', 'qwerty', 'aaaaa', 'bbbbb', 'ccccc', 'ddddd', 'eeeee'];
+      const testPatterns = /^(test|тест|asdf|qwer|zxcv|aaa|bbb|ccc|ddd|eee|xxx|yyy|zzz)/i;
+      
       this.cachedClients = allClients.map((item: any) => {
         let displayName = item.name;
         
@@ -156,6 +168,32 @@ class TableCRMApi {
           email: item.email || '',
           address: item.address || ''
         };
+      }).filter((client: Client) => {
+        // Фильтруем тестовые данные
+        const nameLower = client.name.toLowerCase();
+        const phoneLower = client.phone.toLowerCase();
+        
+        // Проверяем имя на тестовые паттерны
+        if (testNames.some(test => nameLower === test || nameLower.includes(test))) {
+          return false;
+        }
+        
+        // Проверяем на паттерны тестовых данных
+        if (testPatterns.test(nameLower)) {
+          return false;
+        }
+        
+        // Проверяем телефон на тестовые значения (например, sssafsada)
+        if (phoneLower && /^[a-z]{3,}/.test(phoneLower)) {
+          return false;
+        }
+        
+        // Проверяем на повторяющиеся символы (например, xxxxx, aaaaa)
+        if (/^(.)\1{4,}/.test(nameLower)) {
+          return false;
+        }
+        
+        return true;
       });
       
       this.clientsCacheLoaded = true;
@@ -366,7 +404,7 @@ class TableCRMApi {
           return [];
         }
         
-        // Ждем перед повторной попыткой
+        
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
     }

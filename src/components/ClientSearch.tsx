@@ -93,6 +93,9 @@ const ClientSearch: React.FC<ClientSearchProps> = ({ onClientSelect, selectedCli
         }}
         placeholder="+7 (999) 999-99-99"
         disabled={!!selectedClient}
+        autoComplete="off"
+        name="client-phone"
+        data-form-type="other"
         className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 ${
           selectedClient ? 'bg-gray-100 border-gray-200 cursor-not-allowed' : 'border-gray-300'
         }`}

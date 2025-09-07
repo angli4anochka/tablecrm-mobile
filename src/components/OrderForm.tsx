@@ -49,6 +49,9 @@ const OrderForm: React.FC = () => {
   const loadInitialData = async () => {
     setLoadingData(true);
     try {
+      // Очищаем кэш клиентов при загрузке
+      api.clearClientsCache();
+      
       const [incomeAccountsData, orgsData, warehousesData, priceTypesData] = await Promise.all([
         api.getIncomeAccounts(),
         api.getOrganizations(),
@@ -348,6 +351,9 @@ const OrderForm: React.FC = () => {
                   onChange={(e) => setRecipientPhone(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   placeholder="+7 (999) 999-99-99"
+                  autoComplete="off"
+                  name="recipient-phone"
+                  data-form-type="other"
                 />
               </div>
             </div>
